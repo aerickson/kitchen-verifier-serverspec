@@ -351,7 +351,7 @@ module Kitchen
       end
 
       def rspec_bash_cmd
-        config[:rspec_path] ? "#{config[:rspec_path]}/rspec" : '$(which rspec)'
+        config[:rspec_path] ? "#{config[:rspec_path]}/rspec" : "$(#{bundler_cmd} exec which rspec)"
       end
 
       def rspec_path
