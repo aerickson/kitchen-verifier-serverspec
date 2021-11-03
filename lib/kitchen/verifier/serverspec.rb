@@ -218,7 +218,7 @@ module Kitchen
               #{install_gemfile}
               BUNDLE_CMD=#{bundler_cmd}
               echo "---> BUNDLE_CMD variable is: ${BUNDLE_CMD}"
-              #{sudo_env('')} $BUNDLE_CMD config set --local path #{config[:default_path]}/vendor/cache
+              #{sudo_env('')} $BUNDLE_CMD config set --global path #{config[:default_path]}/vendor/cache
               #{sudo_env('')} $BUNDLE_CMD install --gemfile=#{config[:default_path]}/Gemfile
             #{fi_test_serverspec_installed}
           INSTALL
