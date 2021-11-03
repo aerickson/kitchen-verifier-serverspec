@@ -209,12 +209,16 @@ module Kitchen
       # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def install_serverspec
         if config[:remote_exec]
+          # bundle command specifies a path to work around gem installation failures using the default path
+          #   'Bundler::GemNotFound: Could not find net-telnet-0.1.1.gem for installation'
+          #   - https://github.com/aerickson/test_kitchen_docker_serverspec_bug_demo/
+          #   - https://stackoverflow.com/questions/23801899/bundlergemnotfound-could-not-find-rake-10-3-2-in-any-of-the-sources
           <<-INSTALL
               #{test_serverspec_installed}
               #{install_gemfile}
               BUNDLE_CMD=#{bundler_cmd}
               echo "---> BUNDLE_CMD variable is: ${BUNDLE_CMD}"
-              #{sudo_env('')} $BUNDLE_CMD install --gemfile=#{config[:default_path]}/Gemfile
+              #{sudo_env('')} $BUNDLE_CMD install --gemfile=#{config[:default_path]}/Gemfile --path #{config[:default_path]}/vendor/cache
             #{fi_test_serverspec_installed}
           INSTALL
         else
